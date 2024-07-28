@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>ar pos3ter.</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap" rel="stylesheet">
+    <style>
+      body, html {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Gaegu', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <video id="arVideoAsset" src="ar-video.mp4" playsinline preload="auto" muted loop></video>
+        <a-asset-item id="fontGaegu" src="https://cdn.aframe.io/fonts/mozillavr.fnt"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-video
+          id="arVideo"
+          src="#arVideoAsset"
+          width="1"
+          height="1"
+          position="0 0 0"
+          rotation="0 0 0"
+          muted
+          playsinline
+          loop
+        ></a-video>
+        <a-text
+          id="tapText"
+          value="Tap pls <3"
+          color="red"
+          width="3"
+          position="0 0 0.1"
+          align="center"
+          font="https://cdn.aframe.io/fonts/mozillavr.fnt"
+        ></a-text>
+      </a-entity>
+    </a-scene>
+    <script>
+      function playVideo() {
+        var video = document.querySelector('#arVideoAsset');
+        video.play();
+        document.querySelector('#tapText').setAttribute('visible', 'false');
+      }
+
+      function handleTouch(event) {
+        playVideo();
+        window.removeEventListener('touchstart', handleTouch, true);
+        window.removeEventListener('click', handleTouch, true);
+      }
+
+      window.addEventListener('touchstart', handleTouch, true);
+      window.addEventListener('click', handleTouch, true);
+    </script>
+  </body>
+</html>
